@@ -1,0 +1,14 @@
+{% extends "app/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="text-center">
+            {% render_field form.keyword class="form-control" placeholder="キーワードから探す" %}
+            <div class="btn btn-primary mt-2" type="submit">検索</div>
+        </div>
+    </form>
+
+{% endblock %}
