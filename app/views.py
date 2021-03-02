@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.views.generic import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 import requests
 import json
 from .forms import SearchForm
+
 
 
 
@@ -12,7 +14,8 @@ def get_api_data(params):
     result = res.json()
     return result
 
-class IndexView(View):
+class IndexView(View, LoginRequiredMixin):
+    login_url = '/accounts/login/'
     def get(self, request, *args, **kwargs):
         form = SearchForm(request.POST or None)
 
@@ -24,7 +27,7 @@ class IndexView(View):
         form = SearchForm(request.POST or None)
 
         if form.is_valid():
-            keyword = form.cleaned_data['keyword']
+            keyword = form.cleaned_data['travel_keyword']
             params = {
                 'format': 'json',
                 'keyword': keyword,
@@ -32,11 +35,12 @@ class IndexView(View):
 
             result = get_api_data(params)
             travel_data = []
-            for i in result:
-                hotels = i['hotels'][0]
-                hotel0 = hotels['hotel'][0]
+            for i in result['hotels']:
+
+                hotel0 = i['hotel'][0]
                 summary = hotel0['hotelBasicInfo']
                 hotelname = summary['hotelName']
+                hotelno = summary['hotelNo']
                 image = summary['hotelImageUrl']
                 review = summary['reviewAverage']
                 plan = summary['planListUrl']
@@ -45,7 +49,7 @@ class IndexView(View):
                 address = summary['address1']
                 address2 = summary['address2']
 
-                hotel1 = hotels['hotel'][1]
+                hotel1 = i['hotel'][1]
                 rating_info = hotel1['hotelRatingInfo']
                 rating_service = rating_info['serviceAverage']
                 rating_room = rating_info['roomAverage']
@@ -54,6 +58,7 @@ class IndexView(View):
                 rating_location = rating_info['locationAverage']
                 query = {
                     'hotelname': hotelname,
+                    'hotelno': hotelno,
                     'image': image,
                     'review': review,
                     'plan': plan,
@@ -67,7 +72,14 @@ class IndexView(View):
                     'rating_meal': rating_meal,
                     'rating_location': rating_location,
                 }
-                travel_data.append(query)
+                # データがない宿泊施設を除外する
+                if not isinstance(review, float):
+                    continue
+                # reviewが4.0以上のみ表示する
+                if review >= 4.0:
+                    travel_data.append(query)
+                # 降順に並び替え
+
 
             return render(request, 'app/travel.html', {
                 'travel_data': travel_data,
@@ -78,53 +90,3 @@ class IndexView(View):
         'form': 'form'
         })
         
-        # form = SearchForm(request.POST or None)
-        # results = get_api_data(params)
-        # travel_data = []
-        # for i in result:
-        #     hotels = i['hotels']
-        #     hotel = hotels['hotel']
-        #     hotelname = hotel['hotelBasicInfo']['hotelName']
-        #     query = {
-        #         'hotelname' : hotelname,
-        #     }
-        #     travel_data.append(query)
-        # return render(request, 'app/travel.html', {
-        #     'travel_data': travel_data,
-        #     'keyword': keyword,
-        # })
-
-    # return render(request, 'app/index.html', {
-    #     'form': form,
-    # })
-
-        # return render(request, 'app/index.html', {
-        #     'form': form,
-        # })
-
-    # def post(self, request, *args, **kwargs):
-    #     form = SearchForm(request.POST or None)
-
-    #     if form.is_valid():
-    #         keyword = form.cleaned_data['keyword']
-    #         params = {
-    #             'keyword': keyword,
-    #         }
-    #         results = get_api_data(params)
-    #         travel_data = []
-    #         for i in result:
-    #             hotels = i['hotels']
-    #             hotel = hotels['hotel']
-    #             hotelname = hotel['hotelBasicInfo']['hotelName']
-    #             query = {
-    #                 'hotelname' : hotelname,
-    #             }
-    #             travel_data.append(query)
-    #         return render(request, 'app/travel.html', {
-    #             'travel_data': travel_data,
-    #             'keyword': keyword,
-    #         })
-
-    #     return render(request, 'app/index.html', {
-    #         'form': form,
-    #     })
