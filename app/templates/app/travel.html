@@ -9,16 +9,18 @@
         </div>
         <div class="col-md-4 text-center travel-img">
             <img src="{{ travel.image }}" alt="旅行施設の写真" class="img-responsive img-rounded">
+            <a href="{% url 'detail' travel.hotelno %}" class="stretched-link"></a>
         </div>
         <div class="col-md-5 text-center discription">
             <p>住所：{{ travel.address }}{{ travel.address2 }}</p>
-            <p>{{ travel.hotel_detail }}</p>
+            <p>{{ travel.hotel_detail|linebreaksbr }}</p>
             <h5>料金：{{ travel.minprice }}円〜</h5>
             <a class="link-color" href="{{ travel.plan }}" target="_blank">
                 <div class="mt-3">
                     <i class="mr-2">詳細サイトはこちらから</i>
                 </div>
             </a>
+            <a href="" class="btn btn-primary my-5">お気に入り</a>
         </div>
         <canvas class="col-md-3" id="myRaderChart{{travel.hotelno}}" height="300"></canvas>
         <script>

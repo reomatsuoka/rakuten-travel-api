@@ -19,19 +19,19 @@
                     <a class="nav-link" href="/">ホーム</a>
                 </li>
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="">プロフィール</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="">ログアウト</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">プロフィール</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_logout' %}">ログアウト</a>
+                    </li>
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="">サインアップ</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="">ログイン</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_signup' %}">サインアップ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account_login' %}">ログイン</a>
+                    </li>
                 {% endif %}
             </ul>
         </div>
