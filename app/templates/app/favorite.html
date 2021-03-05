@@ -1,7 +1,8 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-
+<h1>お気に入りリスト</h1>
+{{ hotel_data.hotelno }}
 <div class="row travellist">
     {% for travel in travel_data %}
         <div class="col-12 text-center font-weight-bold my-5">
@@ -20,7 +21,7 @@
                     <i class="mr-2">詳細サイトはこちらから</i>
                 </div>
             </a>
-            <a href="{% url 'favorite'  %}" class="btn btn-primary my-5">お気に入り</a>
+            <a href="" class="btn btn-primary my-5">お気に入り</a>
             <a href="https://www.instagram.com/explore/tags/{{ travel.hotelname }}" target="_blank">インスタへ</a>
         </div>
 
