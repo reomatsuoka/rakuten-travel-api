@@ -150,55 +150,54 @@ class DetailView(View):
 
 class FavoriteView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
-        # ユーザーごとにURLを判別。
-        user_data = get_object_or_404(Favorite, user=request.user, id=self.kwargs['pk'])
         # hotelnoの情報を引き出す。
-        hotelno = Favorite.objects.filter(user=user_data).select_related('hotelno')
-        print(hotelno)
-        params = {
-            'hotelNo': hotelno,
-        }
+        favorite_data = Favorite.objects.get(user=request.user)
+        hotelno = favorite_data.hotelno
+        for hotelno_data in favorite_data.hotelno.all():
 
-        result = get_api_detail_data(params)
-        hotel0 = result['hotels'][0]['hotel'][0]
-        summary = hotel0['hotelBasicInfo']
-        hotelname = summary['hotelName']
-        hotelno = summary['hotelNo']
-        image = summary['hotelImageUrl']
-        review = summary['reviewAverage']
-        reviewCount = summary['reviewCount']
-        plan = summary['planListUrl']
-        minprice = summary['hotelMinCharge']
-        hotel_detail = summary['hotelSpecial']
-        address = summary['address1']
-        address2 = summary['address2']
+            params = {
+                'hotelNo': hotelno_data,
+            }
+            result = get_api_detail_data(params)
+            hotel0 = result['hotels'][0]['hotel'][0]
+            summary = hotel0['hotelBasicInfo']
+            hotelname = summary['hotelName']
+            hotelno = summary['hotelNo']
+            image = summary['hotelImageUrl']
+            review = summary['reviewAverage']
+            reviewCount = summary['reviewCount']
+            plan = summary['planListUrl']
+            minprice = summary['hotelMinCharge']
+            hotel_detail = summary['hotelSpecial']
+            address = summary['address1']
+            address2 = summary['address2']
 
-        hotel1 = result['hotels'][0]['hotel'][1]
-        rating_info = hotel1['hotelRatingInfo']
-        rating_service = rating_info['serviceAverage']
-        rating_room = rating_info['roomAverage']
-        rating_equipment = rating_info['equipmentAverage']
-        rating_meal = rating_info['mealAverage']
-        rating_location = rating_info['locationAverage']
-        travel_data = {
-            'hotelname': hotelname,
-            'hotelno': hotelno,
-            'image': image,
-            'review': review,
-            'reviewCount': reviewCount,
-            'plan': plan,
-            'minprice': minprice,
-            'hotel_detail': hotel_detail,
-            'address':address,
-            'address2': address2,
-            'rating_service': rating_service,
-            'rating_room': rating_room,
-            'rating_equipment': rating_equipment,
-            'rating_meal': rating_meal,
-            'rating_location': rating_location,
-            'average': float(review) * 20,
-        }
+            hotel1 = result['hotels'][0]['hotel'][1]
+            rating_info = hotel1['hotelRatingInfo']
+            rating_service = rating_info['serviceAverage']
+            rating_room = rating_info['roomAverage']
+            rating_equipment = rating_info['equipmentAverage']
+            rating_meal = rating_info['mealAverage']
+            rating_location = rating_info['locationAverage']
+            hotel_data = {
+                'hotelname': hotelname,
+                'hotelno': hotelno,
+                'image': image,
+                'review': review,
+                'reviewCount': reviewCount,
+                'plan': plan,
+                'minprice': minprice,
+                'hotel_detail': hotel_detail,
+                'address':address,
+                'address2': address2,
+                'rating_service': rating_service,
+                'rating_room': rating_room,
+                'rating_equipment': rating_equipment,
+                'rating_meal': rating_meal,
+                'rating_location': rating_location,
+                'average': float(review) * 20,
+            }
 
-        return render(request, app/favorite.html,{
-            'hotel_data': hotel_data,
-        })
+            return render(request, 'app/favorite.html',{
+                'hotel_data': hotel_data,
+            })
