@@ -153,10 +153,10 @@ class FavoriteView(View, LoginRequiredMixin):
         # hotelnoの情報を引き出す。
         favorite_data = Favorite.objects.get(user=request.user)
         hotelno = favorite_data.hotelno
+        hotel_data = []
         for hotelno_data in favorite_data.hotelno.all():
-
             params = {
-                'hotelNo': hotelno_data,
+                'hotelNo': hotelno_data.number,
             }
             result = get_api_detail_data(params)
             hotel0 = result['hotels'][0]['hotel'][0]
@@ -179,7 +179,7 @@ class FavoriteView(View, LoginRequiredMixin):
             rating_equipment = rating_info['equipmentAverage']
             rating_meal = rating_info['mealAverage']
             rating_location = rating_info['locationAverage']
-            hotel_data = {
+            query = {
                 'hotelname': hotelname,
                 'hotelno': hotelno,
                 'image': image,
@@ -197,7 +197,8 @@ class FavoriteView(View, LoginRequiredMixin):
                 'rating_location': rating_location,
                 'average': float(review) * 20,
             }
+            hotel_data.append(query)
 
-            return render(request, 'app/favorite.html',{
-                'hotel_data': hotel_data,
-            })
+        return render(request, 'app/favorite.html',{
+            'hotel_data': hotel_data,
+        })
