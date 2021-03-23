@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sites', 
     'allauth', 
     'allauth.account', 
-    'allauth.socialaccount'
+    'allauth.socialaccount',
 ]
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'

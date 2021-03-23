@@ -1,6 +1,17 @@
 from django.db import models
 from django.conf import settings
 
+class Area(models.Model):
+    middle_class_name = models.CharField("都道府県名", max_length=20, blank=False)
+    small_class_name = models.CharField("市名", max_length=20, blank=False)
+    detail_class_name = models.CharField("詳細地名", max_length=20, blank=True)
+    checkin_date = models.DateField(blank=False, null=False)
+    checkout_date = models.DateField(blank=False, null=False)
+
+    def __str__(self):
+        return str(self.middle_class_name)
+
+
 class Hotel(models.Model):
     number = models.IntegerField()
 
