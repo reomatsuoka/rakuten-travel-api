@@ -8,34 +8,36 @@
             src="https://www.priga.jp/download/00155.html" style="filter: contrast(1.2) opacity(0.4);"></iframe>
     </div>
     <div class="container px-5 py-24 mx-auto flex-end">
-        <div class="lg:w-1/2 md:w-1/2 bg-white rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 mb-20 relative z-10 shadow-md">
+        <div
+            class="lg:w-1/2 md:w-1/2 bg-white rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 mb-20 relative z-10 shadow-md">
             <h2 class="text-gray-900 text-3xl my-2 font-medium title-font">Serch Form</h2>
             <p class="leading-relaxed mb-5 text-gray-600">※全項目入力必須</p>
             <div class="relative mb-4">
                 <form method="post">
                     {% csrf_token %}
                     <label for="datetime" class="leading-7 text-lg text-gray-900 font-medium ">空室検索</label>
-                        <div class="flex mb-4 mt-2">
-                            <div class="flex self-center justify-start mr-4">
-                                <p class="mr-2">Check In :</p> 
-                                <p class="border rounded">{{ form.checkin_date }}</p>
-                            </div>
-                            <div class="flex self-center justify-start">
-                                <p class="mr-2">Check Out :</p> 
-                                <p class="border rounded">{{ form.checkout_date }}</p>
-                            </div>
+                    <div class="flex mb-4 mt-2">
+                        <div class="flex self-center justify-start mr-4">
+                            <p class="mr-2">Check In :</p>
+                            <p class="border rounded">{{ form.checkin_date }}</p>
                         </div>
-                        <div class="flex self-center justify-start mr-4 mb-4">
-                            <p class="mr-2">都道府県 :</p>
-                            <p class="border rounded">{{ form.middle_class_name }}</p>
+                        <div class="flex self-center justify-start">
+                            <p class="mr-2">Check Out :</p>
+                            <p class="border rounded">{{ form.checkout_date }}</p>
                         </div>
-                        <div class="flex self-center justify-start mr-4 mb-6">
-                            <p class="mr-2">市区郡　 :</p>
-                            <p class="border rounded">{{ form.small_class_name }}</p>
-                        </div>
-                        <div class="flex justify-center">
-                            <button class="flex center text-white bg-indigo-500 border-0 py-2 px-6 ml-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
-                        </div>
+                    </div>
+                    <div class="flex self-center justify-start mr-4 mb-4">
+                        <p class="mr-2">都道府県 :</p>
+                        <p class="border rounded">{{ form.middle_class_name }}</p>
+                    </div>
+                    <div class="flex self-center justify-start mr-4 mb-6">
+                        <p class="mr-2">市区郡　 :</p>
+                        <p class="border rounded">{{ form.small_class_name }}</p>
+                    </div>
+                    <div class="flex justify-center">
+                        <button
+                            class="flex center text-white bg-indigo-500 border-0 py-2 px-6 ml-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
+                    </div>
                 </form>
             </div>
             <!-- <div class="relative mb-4">
@@ -45,10 +47,10 @@
                             {% render_field form.travel_keyword class="form-control h-10 border border-gray-300 py-1 px-3 text-sm w-full" placeholder="条件から宿泊施設を探す" %}
                         <button
                             class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 ml-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button> -->
-                    <!-- </div> -->
-                    <!-- <textarea id="keyword" name="keyword"
+            <!-- </div> -->
+            <!-- <textarea id="keyword" name="keyword"
                         class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-8 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea> -->
-                    <!-- <button
+            <!-- <button
                         class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button> -->
             <p class="text-xs text-gray-500 mt-3">Chicharrones blog helvetica normcore iceland tousled brook viral
                 artisan.</p>
