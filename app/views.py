@@ -123,10 +123,10 @@ class IndexView(View, LoginRequiredMixin):
                 # 降順に並び替え
                 travel_data = sorted(travel_data, key=lambda x: x['review'], reverse=True)
                 total_hit_count = len(travel_data)
-                page_obj = paginate_queryset(request, travel_data, 5)
+                page_obj = paginate_queryset(request, travel_data, 10)
 
                 return render(request, 'app/travel.html', {
-                    'travel_data': travel_data,
+                    'travel_data': page_obj.object_list,
                     'total_hit_count':total_hit_count,
                     'page_obj': page_obj,
                 })
