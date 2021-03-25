@@ -7,4 +7,6 @@ urlpatterns = [
     path('search/', views.SearchView.as_view(), name='search'),
     path('detail/<str:hotelno>', views.DetailView.as_view(), name='detail'),
     path('favorite/', views.FavoriteView.as_view(), name='favorite'),
+    path('addfavorite/<id>', views.addFavorite, name='addfavorite'),
+    path('removefavorite/<id>', views.removeFavorite, name='removefavorite'),
 ]

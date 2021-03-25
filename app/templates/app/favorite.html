@@ -14,7 +14,9 @@
 					<p class="mb-8 leading-relaxed">{{ hotel.hotel_detail|linebreaksbr }}</p>
 						<h5 class="mb-8 leading-relaxed">料金：{{ hotel.minprice }}円〜</h5>
 				<div class="flex justify-center">
-					<a class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg" href="/">お気に入り</a>
+					<a href="{% url 'removefavorite' hotel.hotelno %}">
+                        <button class="inline-flex bg-blue-200 border border-black py-2 px-6 focus:outline-none hover:bg-blue-300 rounded text-lg">お気に入りから削除</button>
+                    </a>
 					<a class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg" href="https://www.instagram.com/explore/tags/{{ hotel.hotelname }}" target="_blank">インスタへ</a>
 				</div>
 			</div>

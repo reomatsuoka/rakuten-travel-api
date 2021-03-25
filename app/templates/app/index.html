@@ -44,3 +44,54 @@
 </section>
 
 {% endblock %}
+{% block extrajs %}
+    <script>
+        const parentCategoryElement = $('#id_middle_class_name');
+        const categoryElement = $('#id_small_class_name');
+        const categories = {
+            middleClass : [
+                {
+                    middleClassName : "北海道",
+                    smallClassName : "稚内・留萌・利尻・礼文"
+                },
+                
+            ]
+        };
+
+
+        const changeCategory = (select) => {
+            // 子カテゴリの選択欄を空にする。
+            categoryElement.children().remove();
+
+            // 選択した親カテゴリに紐づく子カテゴリの一覧を取得する。
+            const parentId = parentCategoryElement.val();
+            const categoryList = categories[parentId];
+
+            // 子カテゴリの選択肢を作成・追加。
+            for (const category of categoryList) {
+                const option = $('<option>');
+                option.val(category['middleClassName']);
+                option.text(category['smallClassName']);
+                categoryElement.append(option);
+            }
+
+            // 指定があれば、そのカテゴリを選択する
+            if (select !== undefined) {
+                categoryElement.val(select);
+            }
+        };
+
+
+        $('#id_middle_class_name').on('change', () => {
+            changeCategory();
+        });
+
+
+        // 入力値に問題があって再表示された場合、ページ表示時点で小カテゴリが絞り込まれるようにする
+        if (parentCategoryElement.val()) {
+            const selectedCategory = categoryElement.val();
+            changeCategory(selectedCategory);
+        }
+
+    </script>
+{% endblock %}

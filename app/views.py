@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 from .models import Hotel, Favorite, Area
 import requests
 import json
@@ -40,6 +41,11 @@ def paginate_queryset(request, queryset, count):
         page_obj = paginator.page(paginator.num_pages)
     return page_obj
 
+
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['middleClasses'] = json_obj.objects.all()
+        return context
 class IndexView(View, LoginRequiredMixin):
     login_url = '/accounts/login/'
     
@@ -63,7 +69,6 @@ class SearchView(View, LoginRequiredMixin):
             'middleClassCode': middle_class_name,
             'smallClassCode': small_class_name,
         }
-        # print(params)
         result = get_api_data(params)
         if 'hotels' not in result:
             print('空室がありません')
@@ -85,10 +90,6 @@ class SearchView(View, LoginRequiredMixin):
             address2 = summary['address2']
             dpPlanListUrl = summary['dpPlanListUrl']
             reviewUrl = summary['reviewUrl']
-
-            # hotel1 = i['hotel'][1]
-            # hotelReserveInfo = hotel1['hotelReserveInfo']
-            # reserveRecordCount = hotelReserveInfo['reserveRecordCount']
 
             query = {
                 'hotelname': hotelname,
@@ -119,6 +120,17 @@ class SearchView(View, LoginRequiredMixin):
             'total_hit_count':total_hit_count,
             'page_obj': page_obj,
         })
+
+@login_required
+def addFavorite(request, id):
+    favorite_data = Favorite.objects.get(user=request.user)
+    # 第2引数は使わないため　”_”を入れる。
+    hotel_data, _ = Hotel.objects.get_or_create(number=id)
+    if not hotel_data in favorite_data.hotelno.all():
+        favorite_data.hotelno.add(hotel_data)
+        favorite_data.save()
+
+    return redirect('favorite')
 
 class DetailView(View):
     def get(self, request, *args, **kwargs):
@@ -166,7 +178,6 @@ class DetailView(View):
             'rating_location': rating_location,
             'average': float(review) * 20,
         }
-
         return render(request, 'app/detail.html', {
             'travel_data': travel_data,
         })
@@ -225,3 +236,10 @@ class FavoriteView(View, LoginRequiredMixin):
         return render(request, 'app/favorite.html',{
             'hotel_data': hotel_data,
         })
+
+@login_required
+def removeFavorite(request, id):
+    favorite_data = Favorite.objects.get(user=request.user)
+    hotelNo_data, _ = Hotel.objects.get_or_create(number=id)
+    favorite_data.hotelno.remove(hotelNo_data)
+    return redirect('favorite')

@@ -23,3 +23,4 @@ class SearchForm(forms.Form):
     small_class_name = forms.ChoiceField(label='市区郡名', widget=forms.Select, choices=list(city_choice.items()))
 
 
+
