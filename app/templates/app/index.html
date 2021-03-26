@@ -20,6 +20,7 @@
                                 <p class="border rounded">{{ form.checkin_date }}</p>
                             </div>
                             <div class="flex self-center justify-start">
+                                <!-- できればチェックインの次の日に自動入力となる様にしたい -->
                                 <p class="mr-2">Check Out :</p> 
                                 <p class="border rounded">{{ form.checkout_date }}</p>
                             </div>
@@ -49,13 +50,34 @@
         const parentCategoryElement = $('#id_middle_class_name');
         const categoryElement = $('#id_small_class_name');
         const categories = {
-            middleClass : [
+            "北海道" : [
                 {
-                    middleClassName : "北海道",
-                    smallClassName : "稚内・留萌・利尻・礼文"
+                    'pk' : '1',
+                    'name' : "稚内・留萌・利尻・礼文"
                 },
-                
-            ]
+                {
+                    'pk' : '2',
+                    'name' : "定山渓"
+                },
+                {
+                    'pk' : '3',
+                    'name' : "網走・紋別・北見・知床"
+                },
+            ],
+            "青森" : [
+                {
+                    'pk' : '1',
+                    'name' : "青森・浅虫温泉"
+                },
+                {
+                    'pk' : '2',
+                    'name' : "津軽半島・五所川原"
+                },
+                {
+                    'pk' : '3',
+                    'name' : "白神山地・西津軽"
+                },
+            ],
         };
 
 
@@ -64,14 +86,15 @@
             categoryElement.children().remove();
 
             // 選択した親カテゴリに紐づく子カテゴリの一覧を取得する。
+            // val()でvalue値を取得する。
             const parentId = parentCategoryElement.val();
             const categoryList = categories[parentId];
 
             // 子カテゴリの選択肢を作成・追加。
             for (const category of categoryList) {
                 const option = $('<option>');
-                option.val(category['middleClassName']);
-                option.text(category['smallClassName']);
+                option.val(category['pk']);
+                option.text(category['name']);
                 categoryElement.append(option);
             }
 
@@ -82,16 +105,16 @@
         };
 
 
-        $('#id_middle_class_name').on('change', () => {
-            changeCategory();
-        });
+        // $('#id_middle_class_name').on('change', () => {
+        //     changeCategory();
+        // });
 
 
         // 入力値に問題があって再表示された場合、ページ表示時点で小カテゴリが絞り込まれるようにする
-        if (parentCategoryElement.val()) {
-            const selectedCategory = categoryElement.val();
-            changeCategory(selectedCategory);
-        }
+        // if (parentCategoryElement.val()) {
+        //     const selectedCategory = categoryElement.val();
+        //     changeCategory(selectedCategory);
+        // }
 
     </script>
 {% endblock %}

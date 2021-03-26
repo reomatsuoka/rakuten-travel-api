@@ -152,6 +152,15 @@ class DetailView(View):
         hotel_detail = summary['hotelSpecial']
         address = summary['address1']
         address2 = summary['address2']
+        userReview = summary['userReview']
+        dpPlanListUrl = summary['dpPlanListUrl']
+        reviewUrl = summary['reviewUrl']
+        telephoneNo = summary['telephoneNo']
+        access = summary['access']
+        parkingInformation = summary['parkingInformation']
+        nearestStation = summary['nearestStation']
+        roomImageUrl = summary['roomImageUrl']
+        hotelMapImageUrl = summary['hotelMapImageUrl']
 
         hotel1 = result['hotels'][0]['hotel'][1]
         rating_info = hotel1['hotelRatingInfo']
@@ -177,6 +186,15 @@ class DetailView(View):
             'rating_meal': rating_meal,
             'rating_location': rating_location,
             'average': float(review) * 20,
+            'userReview': userReview,
+            'dpPlanListUrl': dpPlanListUrl,
+            'reviewUrl': reviewUrl,
+            'telephoneNo': telephoneNo,
+            'access': access,
+            'parkingInformation': parkingInformation,
+            'nearestStation': nearestStation,
+            'roomImageUrl': roomImageUrl,
+            'hotelMapImageUrl': hotelMapImageUrl,
         }
         return render(request, 'app/detail.html', {
             'travel_data': travel_data,
