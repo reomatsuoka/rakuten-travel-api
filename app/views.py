@@ -51,9 +51,38 @@ class IndexView(View, LoginRequiredMixin):
     
     def get(self, request, *args, **kwargs):
         form = SearchForm(request.POST or None)
-        return render(request, 'app/index.html', {
-            'form': form,
-        })
+
+        # JSONから下記を作れば完成
+        middleClassCodeData = []
+        smallClassCode = []
+        smallClassName = []
+
+        for i in json_obj['middleClasses']:
+            middleClassCodeData.append(i['middleClass'][0]['middleClassCode'])
+            small_classes = i['middleClass'][1]['smallClasses']
+            # print(small_classes)
+            for j in small_classes:
+                smallClassCode.append(j['smallClass'][0]['smallClassCode'])
+                smallClassName.append(j['smallClass'][0]['smallClassName'])
+
+        
+                
+
+            for middleClassCode in middleClassCodeData:
+                # print(middleClassCode)
+                category_data = {
+                    middleClassCode : [
+                        {
+                            "pk": smallClassCode,
+                            "name": smallClassName,
+                        },
+                    ],
+                }
+                # print(category_data)
+                return render(request, 'app/index.html', {
+                    'form': form,
+                    'category_data': json.dumps(category_data)
+                })
 
 class SearchView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
@@ -61,6 +90,10 @@ class SearchView(View, LoginRequiredMixin):
         checkout_date = request.GET['checkout_date']
         middle_class_name = request.GET['middle_class_name']
         small_class_name = request.GET['small_class_name']
+        adult_num = request.GET['adult_num']
+        room_num = request.GET['room_num']
+        min_charge = request.GET['min_charge']
+        max_charge = request.GET['max_charge']
 
         params = {
             'checkinDate': checkin_date,
@@ -68,15 +101,17 @@ class SearchView(View, LoginRequiredMixin):
             'largeClassCode': "japan",
             'middleClassCode': middle_class_name,
             'smallClassCode': small_class_name,
+            'adultNum' : adult_num,
+            'roomNum': room_num,
+            'minCharge': min_charge,
+            'maxCharge': max_charge,
         }
         result = get_api_data(params)
         if 'hotels' not in result:
-            print('空室がありません')
-            return redirect('index')
+            return render(request, 'app/error.html')
 
         travel_data = []
         for i in result['hotels']:
-
             hotel0 = i['hotel'][0]
             summary = hotel0['hotelBasicInfo']
             hotelname = summary['hotelName']

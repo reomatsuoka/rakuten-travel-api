@@ -21,6 +21,11 @@ class SearchForm(forms.Form):
         input_formats=['%Y-%m-%d'])
     middle_class_name = forms.ChoiceField(label='都道府県', widget=forms.Select, choices=list(prefecture_choice.items()))
     small_class_name = forms.ChoiceField(label='市区郡名', widget=forms.Select, choices=list(city_choice.items()))
+    adult_num = forms.ChoiceField(label='大人の人数', choices=[(x, x) for x in range(1, 10)])
+    room_num = forms.ChoiceField(label='部屋数', choices=[(x, x) for x in range(1, 10)])
+    min_charge = forms.CharField(label='下限金額', required=False)
+    max_charge = forms.CharField(label='上限金額', required=False)
+
 
 
 
