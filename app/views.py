@@ -53,36 +53,27 @@ class IndexView(View, LoginRequiredMixin):
         form = SearchForm(request.POST or None)
 
         # JSONから下記を作れば完成
+        category_data = {}
         middleClassCodeData = []
         smallClassCode = []
         smallClassName = []
 
         for i in json_obj['middleClasses']:
-            middleClassCodeData.append(i['middleClass'][0]['middleClassCode'])
+            middleClassCodeData = i['middleClass'][0]['middleClassCode']
             small_classes = i['middleClass'][1]['smallClasses']
-            # print(small_classes)
+            small_class = []
             for j in small_classes:
-                smallClassCode.append(j['smallClass'][0]['smallClassCode'])
-                smallClassName.append(j['smallClass'][0]['smallClassName'])
-
-        
-                
-
-            for middleClassCode in middleClassCodeData:
-                # print(middleClassCode)
-                category_data = {
-                    middleClassCode : [
-                        {
-                            "pk": smallClassCode,
-                            "name": smallClassName,
-                        },
-                    ],
-                }
-                # print(category_data)
-                return render(request, 'app/index.html', {
-                    'form': form,
-                    'category_data': json.dumps(category_data)
+                smallClassCode = j['smallClass'][0]['smallClassCode']
+                smallClassName = j['smallClass'][0]['smallClassName']
+                small_class.append({
+                    "pk": smallClassCode, 
+                    "name": smallClassName
                 })
+                category_data[middleClassCodeData] = [small_class]
+        return render(request, 'app/index.html', {
+            'form': form,
+            'category_data': json.dumps(category_data)
+        })
 
 class SearchView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
