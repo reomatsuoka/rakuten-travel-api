@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
@@ -12,6 +13,7 @@ from .forms import SearchForm
 REQUEST_VACANCY_URL = 'https://app.rakuten.co.jp/services/api/Travel/VacantHotelSearch/20170426?format=json&applicationId=1077422512724458210'
 REQUEST_URL = 'https://app.rakuten.co.jp/services/api/Travel/VacantHotelSearch/20170426?format=json&applicationId=1077422512724458210'
 REQUEST_DETAIL_URL = 'https://app.rakuten.co.jp/services/api/Travel/HotelDetailSearch/20170426?format=json&applicationId=1077422512724458210'
+REQUEST_RANKING_URL = 'https://app.rakuten.co.jp/services/api/Travel/HotelRanking/20170426?format=json&applicationId=1077422512724458210'
 
 json_file = open('app/areacode.json', 'r')
 # JSONとして読み込む
@@ -29,6 +31,10 @@ def get_api_detail_data(params):
     result = res.json()
     return result
 
+def get_api_ranking_data(params):
+    res = requests.get(REQUEST_RANKING_URL, params)
+    result = res.json()
+    return result
 
 def paginate_queryset(request, queryset, count):
     paginator = Paginator(queryset, count)
@@ -47,17 +53,11 @@ def get_context_data(self, **kwargs):
         context['middleClasses'] = json_obj.objects.all()
         return context
 class IndexView(View, LoginRequiredMixin):
-    login_url = '/accounts/login/'
-    
     def get(self, request, *args, **kwargs):
         form = SearchForm(request.POST or None)
 
         # JSONから下記を作れば完成
         category_data = {}
-        middleClassCodeData = []
-        smallClassCode = []
-        smallClassName = []
-
         for i in json_obj['middleClasses']:
             middleClassCodeData = i['middleClass'][0]['middleClassCode']
             small_classes = i['middleClass'][1]['smallClasses']
@@ -69,10 +69,42 @@ class IndexView(View, LoginRequiredMixin):
                     "pk": smallClassCode, 
                     "name": smallClassName
                 })
-                category_data[middleClassCodeData] = [small_class]
+                category_data[middleClassCodeData] = small_class
+
+        params = {
+            'genre': 'onsen'
+        }
+        result = get_api_ranking_data(params)
+        ranking_data = []
+        for i in result['Rankings']:
+            ranking = i['Ranking']
+            title = ranking['title']
+            hotels = ranking['hotels']
+            ranking_info = title
+        
+
+            for j in hotels:
+                hotel = j['hotel']
+                rank = hotel['rank']
+                hotelName = hotel['hotelName']
+                middleClassName = hotel['middleClassName']
+                hotelImageUrl = hotel['hotelImageUrl']
+                hotelNo = hotel['hotelNo']
+
+                query = {
+                    'rank': rank,
+                    'hotelName': hotelName,
+                    'middleClassName': middleClassName,
+                    'hotelImageUrl': hotelImageUrl,
+                    'hotelNo': hotelNo,
+                }
+                ranking_data.append(query)
+
         return render(request, 'app/index.html', {
             'form': form,
-            'category_data': json.dumps(category_data)
+            'category_data': json.dumps(category_data),
+            'ranking_info': ranking_info,
+            'ranking_data': ranking_data,
         })
 
 class SearchView(View, LoginRequiredMixin):
@@ -98,14 +130,16 @@ class SearchView(View, LoginRequiredMixin):
             'maxCharge': max_charge,
         }
         result = get_api_data(params)
-        if 'hotels' not in result:
-            return render(request, 'app/error.html')
+        # if 'hotels' not in result:
+        #     messages.info(request, '誠に申し訳ございませんが、\nこの検索条件に該当する空室が見つかりません。\n条件を変えて再検索してください。')
+        #     return render(request, 'app/index.html')
 
         travel_data = []
         for i in result['hotels']:
             hotel0 = i['hotel'][0]
             summary = hotel0['hotelBasicInfo']
             hotelname = summary['hotelName']
+            hotelname_replace = hotelname.replace('　', '')
             hotelno = summary['hotelNo']
             image = summary['hotelImageUrl']
             review = summary['reviewAverage']
@@ -119,6 +153,7 @@ class SearchView(View, LoginRequiredMixin):
 
             query = {
                 'hotelname': hotelname,
+                'hotelname_replace': hotelname_replace,
                 'hotelno': hotelno,
                 'image': image,
                 'review': review,
@@ -226,6 +261,17 @@ class DetailView(View):
             'travel_data': travel_data,
         })
 
+@login_required
+def addFavorite2(request, id):
+    favorite_data = Favorite.objects.get(user=request.user)
+    # 第2引数は使わないため　”_”を入れる。
+    hotel_data, _ = Hotel.objects.get_or_create(number=id)
+    if not hotel_data in favorite_data.hotelno.all():
+        favorite_data.hotelno.add(hotel_data)
+        favorite_data.save()
+
+    return redirect('favorite')
+
 class FavoriteView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
         # hotelnoの情報を引き出す。
@@ -240,6 +286,7 @@ class FavoriteView(View, LoginRequiredMixin):
             hotel0 = result['hotels'][0]['hotel'][0]
             summary = hotel0['hotelBasicInfo']
             hotelname = summary['hotelName']
+            hotelname_replace = hotelname.replace('　', '')
             hotelno = summary['hotelNo']
             image = summary['hotelImageUrl']
             review = summary['reviewAverage']
@@ -259,6 +306,7 @@ class FavoriteView(View, LoginRequiredMixin):
             rating_location = rating_info['locationAverage']
             query = {
                 'hotelname': hotelname,
+                'hotelname_replace': hotelname_replace,
                 'hotelno': hotelno,
                 'image': image,
                 'review': review,
@@ -276,6 +324,7 @@ class FavoriteView(View, LoginRequiredMixin):
                 'average': float(review) * 20,
             }
             hotel_data.append(query)
+        print(hotel_data)
 
         return render(request, 'app/favorite.html',{
             'hotel_data': hotel_data,

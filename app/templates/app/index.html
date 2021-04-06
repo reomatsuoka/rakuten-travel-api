@@ -7,102 +7,206 @@
         <iframe width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" title="image" scrolling="no"
             src="https://www.priga.jp/download/00155.html" style="filter: contrast(1.2) opacity(0.4);"></iframe>
     </div>
-    <div class="container px-5 py-24 mx-auto flex-end">
-        <div class="lg:w-7/12 md:w-7/12 bg-white rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 mb-20 relative z-10 shadow-md">
-            <h2 class="text-gray-900 text-3xl my-5 font-medium title-font">Serch Form</h2>
-            <p class="leading-relaxed mb-2 text-gray-600">※入力必須項目</p>
-            <div class="relative mb-4">
-                <form method="GET" action="{% url 'search' %}">
-                    <label for="datetime" class="leading-7 text-lg text-gray-900 font-medium ">空室検索</label>
-                        <div class="flex mb-4 mt-2">
-                            <div class="flex self-center justify-start mr-4">
-                                <p class="mr-2">Check In :</p> 
-                                <p class="border rounded">{{ form.checkin_date }}</p>
-                            </div>
-                            <div class="flex self-center justify-start">
-                                <!-- できればチェックインの次の日に自動入力となる様にしたい -->
-                                <p class="mr-2">Check Out :</p> 
-                                <p class="border rounded">{{ form.checkout_date }}</p>
-                            </div>
-                        </div>
-                        <div class="flex self-center justify-start mr-4 mb-4">
-                            <p class="mr-2">都道府県 :</p>
-                            <p class="border rounded">{{ form.middle_class_name }}</p>
-                        </div>
-                        <div class="flex self-center justify-start mr-4 mb-8">
-                            <p class="mr-2">市区郡　 :</p>
-                            <p class="border rounded">{{ form.small_class_name }}</p>
-                        </div>
-                        <p class="leading-relaxed my-5 text-gray-600">※入力任意項目</p>
-                        <div class="flex mb-6">
-                            <div class="flex self-center justify-center mr-4">
-                                <p class="mr-2">人数(大人) :</p>
-                                <p class="border rounded">{{ form.adult_num }}</p>
-                            </div>
-                            <div class="flex self-center justify-center mr-4">
-                                <p class="mr-2">部屋数 :</p>
-                                <p class="border rounded">{{ form.room_num }}</p>
-                            </div>
-                        </div>
-                        <div class="flex mb-6">
-                            <div class="flex self-center justify-center">
-                                <p class="mr-1">下限金額 :</p>
-                                <p class="border rounded">{{ form.min_charge }}</p>
-                                <p class="mx-1">円</p>
-                            </div>
-                            <p>〜</p>
-                            <div class="flex self-center justify-center mr-2">
-                                <p class="mr-1">上限金額 :</p>
-                                <p class="border rounded">{{ form.max_charge }}</p>
-                                <p class="mx-1">円</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-center">
-                            <button class="flex center text-white bg-indigo-500 border-0 py-2 px-6 ml-2 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button>
-                        </div>
-                </form>
-            </div>
-            <p class="text-xs text-gray-500 mt-3">Chicharrones blog helvetica normcore iceland tousled brook viral
-                artisan.</p>
+    <!-- {% if messages %}
+    <div class="container relative flex justify-center items-center">
+        <div
+            class="notification is-info bg-white rounded-lg flex flex-col justify-center items-center w-2/5 h-40 mt-10">
+            {% for message in messages %}
+            <p class="text-xl font-medium text-center"> {{ message | linebreaksbr }}</p>
+            {% endfor %}
+            <a class="text-blue-500 mt-3" href="/">戻る→</a>
         </div>
     </div>
+    {% endif %} -->
+    <div class="container px-2 pt-12 pb-0 mx-auto flex-end">
+        <div
+            class="lg:w-7/12 md:w-7/12 bg-white rounded-lg p-8 flex flex-col md:ml-auto w-full mt-10 md:mt-0 mb-20 relative z-10 shadow-md">
+            <h2 class="text-gray-900 text-3xl my-5 font-medium title-font">Serch Form</h2>
+            <p class="leading-relaxed mb-2 text-gray-600">※入力必須項目</p>
+            <div class="relative mb-0">
+                <form method="GET" action="{% url 'search' %}">
+                    <label for="datetime" class="leading-7 text-lg text-gray-900 font-medium ">空室検索</label>
+                    <div class="flex mb-4 mt-2">
+                        <div class="flex self-center justify-start mr-4">
+                            <p class="mr-2">Check In :</p>
+                            <p class="border rounded">{{ form.checkin_date }}</p>
+                        </div>
+                        <div class="flex self-center justify-start">
+                            <!-- できればチェックインの次の日に自動入力となる様にしたい -->
+                            <p class="mr-2">Check Out :</p>
+                            <p class="border rounded">{{ form.checkout_date }}</p>
+                        </div>
+                    </div>
+                    <div class="flex self-center justify-start mr-4 mb-4">
+                        <p class="mr-2">都道府県 :</p>
+                        <p class="border rounded">{{ form.middle_class_name }}</p>
+                    </div>
+                    <div class="flex self-center justify-start mr-4 mb-8">
+                        <p class="mr-2">市区郡　 :</p>
+                        <p class="border rounded">{{ form.small_class_name }}</p>
+                    </div>
+                    <p class="leading-relaxed my-5 text-gray-600">※入力任意項目</p>
+                    <div class="flex mb-6">
+                        <div class="flex self-center justify-center mr-4">
+                            <p class="mr-2">人数(大人) :</p>
+                            <p class="border rounded">{{ form.adult_num }}</p>
+                        </div>
+                        <div class="flex self-center justify-center mr-4">
+                            <p class="mr-2">部屋数 :</p>
+                            <p class="border rounded">{{ form.room_num }}</p>
+                        </div>
+                    </div>
+                    <div class="flex mb-6">
+                        <div class="flex self-center justify-center">
+                            <p class="mr-1">下限金額 :</p>
+                            <p class="border rounded">{{ form.min_charge }}</p>
+                            <p class="mx-1">円</p>
+                        </div>
+                        <p class="mx-2">〜</p>
+                        <div class="flex self-center justify-center mr-2">
+                            <p class="mr-1">上限金額 :</p>
+                            <p class="border rounded">{{ form.max_charge }}</p>
+                            <p class="mx-1">円</p>
+                        </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button
+                            class="flex center text-white bg-indigo-500 border-0 py-2 px-6 ml-2 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                            type="submit">Button</button>
+                        <button id="openModal" class="bg-white">Open modal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- モーダルエリアここから -->
+    <div id="modalArea" class="modalArea bg-white">
+        <div id="modalBg" class="modalBg"></div>
+        <div class="modalWrapper">
+            <div class="modalContents">
+                <h1>Here are modal contents!</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. </p>
+            </div>
+            <div id="closeModal" class="closeModal">
+                ×
+            </div>
+        </div>
+    </div>
+    <!-- モーダルエリアここまで -->
+
+    <div class="swiper-container bg-white">
+        <div class="swiper-wrapper">
+            {% for ranking in ranking_data %}
+            <div class="swiper-slide">
+                <a href="{% url 'detail' ranking.hotelNo %}">
+                    <img src="{{ ranking.hotelImageUrl }}" alt="Swiper" class="relative ">
+                </a>
+                <p class="absolute top-0 bg-gray-400 bg-opacity-70 text-white">{{ ranking.hotelName }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+
+    <!-- <div class="container px-5 py-5 mx-auto flex-end">
+        <div class="bg-white p-8 md:ml-auto mt-10 md:mt-0 mb-20 relative shadow-md overflow-x-auto">
+            <h1>{{ ranking_info }}</h1>
+            <div class="flex text-center p-0">
+                <div class="flex">
+                    {% for ranking in ranking_data %}
+                    <a href="{% url 'detail' ranking.hotelNo %}">
+                        <img src="{{ ranking.hotelImageUrl }}" alt="" class="">
+                        <p>{{ ranking.hotelName }}</p>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div> -->
 </section>
 
 {% endblock %}
 {% block extrajs %}
-    <script>
-        // parentCategoryElement・categoryElementは変数のためなんでもOK
-        const parentCategoryElement = $('#id_middle_class_name');
-        const categoryElement = $('#id_small_class_name');
-        const categories = JSON.parse('{{category_data|safe}}')
+<script>
+    const swiper = new Swiper('.swiper-container', {
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        slidesPerView: 5,
+        spaceBetween: 0,
+        initialSlide: 5,
+        autoHeight: true,
+        pagination: {
+            el: '.swiper-pagination',
+            type: 'bullets',
+            clickable: true,
+        },
 
-        const changeCategory = (select) => {
-            // 子カテゴリの選択欄を空にする。
-            categoryElement.children().remove();
+    });
 
-            // 選択した親カテゴリに紐づく子カテゴリの一覧を取得する。
-            // val()でvalue値を取得する。
-            const parentId = parentCategoryElement.val();
-            const categoryList = categories[parentId];
+    // parentCategoryElement・categoryElementは変数のためなんでもOK
+    const parentCategoryElement = $('#id_middle_class_name');
+    const categoryElement = $('#id_small_class_name');
+    const categories = JSON.parse('{{category_data|safe}}')
 
-            // 子カテゴリの選択肢を作成・追加。
-            for (const category of categoryList) {
-                const option = $('<option>');
-                option.val(category['pk']);
-                option.text(category['name']);
-                categoryElement.append(option);
-            }
+    const changeCategory = (select) => {
+        // 子カテゴリの選択欄を空にする。
+        categoryElement.children().remove();
 
-            // 指定があれば、そのカテゴリを選択する
-            if (select !== undefined) {
-                categoryElement.val(select);
-            }
-        };
+        // 選択した親カテゴリに紐づく子カテゴリの一覧を取得する。
+        // val()でvalue値を取得する。
+        const parentId = parentCategoryElement.val();
+        const categoryList = categories[parentId];
+
+        // 子カテゴリの選択肢を作成・追加。
+        for (const category of categoryList) {
+            const option = $('<option>');
+            option.val(category['pk']);
+            option.text(category['name']);
+            categoryElement.append(option);
+        }
+
+        // 指定があれば、そのカテゴリを選択する
+        if (select !== undefined) {
+            categoryElement.val(select);
+        }
+    };
 
 
-        $('#id_middle_class_name').on('change', () => {
-            changeCategory();
-        });
+    // $('#id_middle_class_name').on('change', () => {
+    //     changeCategory();
+    // });
 
-    </script>
+    // $('form').on('submit', function() {
+    //     const error; // エラー用の変数を定義
+    //     if ( error ) {
+    //         // エラーが見つかった場合
+    //         if( !$(this).next('span.error').length ) { // この要素の後続要素が存在しない場合
+    //            	    $(this).after('<span class="error">未入力です</span>'); // この要素の後にエラーメッセージを挿入
+    //         return false;
+    //     } else {
+    //         // エラーがなかった場合
+    //         return true;
+    //     }
+    // });
+
+
+    $(function () {
+        const error = document.getElementById('error');
+        if(error){
+            $('#openModal').click(function () {
+                $('#modalArea').fadeIn();
+            });
+            $('#closeModal , #modalBg').click(function () {
+                $('#modalArea').fadeOut();
+            });
+        }
+    });
+</script>
 {% endblock %}

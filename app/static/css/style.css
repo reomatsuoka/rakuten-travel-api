@@ -1,128 +1,337 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    background: #F1F1F1;
-    display: flex;
-    flex-flow: column;
-    min-height: 100vh;
+  background: #f1f1f1;
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
 }
 
 main {
-    flex: 1;
+  flex: 1;
 }
 
 .card-profile {
-    width: 700px;
-    border: 0;
-    border-radius: 1rem;
-    box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.1);
+  width: 700px;
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.1);
 }
 
 .button {
-    width: 150px;
+  width: 150px;
 }
 
 .btn {
-    font-size: 80%;
-    border-radius: 5rem;
-    font-weight: bold;
+  font-size: 80%;
+  border-radius: 5rem;
+  font-weight: bold;
 }
 
 .profile_table {
-    width: 100%;
-    border: 1px solid #D1DBEB;
-    border-radius: 8px;
-    border-collapse: separate;
-    overflow: hidden;
+  width: 100%;
+  border: 1px solid #d1dbeb;
+  border-radius: 8px;
+  border-collapse: separate;
+  overflow: hidden;
 }
 
 .profile_table .header {
-    width: 200px;
-    padding: 16px 24px;
-    text-align: left;
-    background: #F1F5FA;
+  width: 200px;
+  padding: 16px 24px;
+  text-align: left;
+  background: #f1f5fa;
 }
 
 .profile_table .data {
-    padding: 16px 24px;
+  padding: 16px 24px;
 }
 
 .form_wrap {
-    display: grid;
-    gap: 16px;
+  display: grid;
+  gap: 16px;
 }
 
 .form_wrap-2 {
-    grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .form-control:focus {
-    box-shadow: none;
+  box-shadow: none;
 }
 
 .card-auth {
-    width: 400px;
-    border: 0;
-    border-radius: 1rem;
-    box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.1);
+  width: 400px;
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.1);
 }
 
 .card-title {
-    margin-bottom: 2rem;
-    font-size: 1.5rem;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
 }
 
 .card-body {
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .form-auth {
-    width: 100%;
+  width: 100%;
 }
 
 .form-label-group {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .form-label-group input {
-    border-radius: 2rem;
+  border-radius: 2rem;
 }
 
-
-.travellist{
-    vertical-align: middle;
+.travellist {
+  vertical-align: middle;
 }
 
-.img-responsive{
-    display: block;
-    max-width: 100%;
-    max-height: 300px;
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  max-height: 300px;
 }
 
 /* detail */
 
 .star-rating {
-	position: relative;
-	font-size: 20px;
-	word-wrap: normal !important;
+  position: relative;
+  font-size: 20px;
+  word-wrap: normal !important;
 }
 
 .star-rating-front {
-	position: absolute;
-	top: 0;
-	left: 0;
-	overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 }
 
 .star-rating-back {
-	color: #ccc;
+  color: #ccc;
 }
 
 .average {
-	font-size: 20px;
-	font-weight: bold;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ホーム画面ランキング表示 */
+.scroll-nav {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-nav::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+/* トラック部分 */
+.scroll-nav::-webkit-scrollbar-track {
+}
+
+/* バー部分 */
+.scroll-nav::-webkit-scrollbar-thumb {
+  background: #2e7d32;
+}
+
+ul {
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  text-align: center;
+}
+
+li {
+  display: flex;
+  width: auto;
+  padding: 8px;
+  margin: 1px;
+  background: #fff;
+}
+
+/* カルーセル */
+
+.carousel-open:checked + .carousel-item {
+  position: static;
+  opacity: 100;
+}
+
+.carousel-item {
+  -webkit-transition: opacity 0.6s ease-out;
+  transition: opacity 0.6s ease-out;
+}
+
+.carousel-control {
+  background: rgba(0, 0, 0, 0.28);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: none;
+  font-size: 40px;
+  height: 40px;
+  line-height: 35px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+  cursor: pointer;
+  -ms-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  text-align: center;
+  width: 40px;
+  z-index: 10;
+}
+
+.carousel-control.prev {
+  left: 2%;
+}
+
+.carousel-control.next {
+  right: 2%;
+}
+
+.carousel-control:hover {
+  background: rgba(0, 0, 0, 0.8);
+  color: #aaaaaa;
+}
+
+#carousel-1:checked ~ .control-1,
+#carousel-2:checked ~ .control-2,
+#carousel-3:checked ~ .control-3 {
+  display: block;
+}
+
+.carousel-indicators {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  bottom: 2%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 10;
+}
+
+.carousel-indicators li {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.carousel-bullet {
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size: 10px;
+}
+
+.carousel-bullet:hover {
+  color: #aaaaaa;
+}
+
+#carousel-1:checked
+  ~ .control-1
+  ~ .carousel-indicators
+  li:nth-child(1)
+  .carousel-bullet,
+#carousel-2:checked
+  ~ .control-2
+  ~ .carousel-indicators
+  li:nth-child(2)
+  .carousel-bullet,
+#carousel-3:checked
+  ~ .control-3
+  ~ .carousel-indicators
+  li:nth-child(3)
+  .carousel-bullet {
+  color: #428bca;
+}
+
+#title {
+  width: 100%;
+  position: absolute;
+  padding: 0px;
+  margin: 0px auto;
+  text-align: center;
+  font-size: 27px;
+  color: rgba(255, 255, 255, 1);
+  font-family: "Open Sans", sans-serif;
+  z-index: 9999;
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.33),
+    -1px 0px 2px rgba(255, 255, 255, 0);
+}
+
+.swiper-container .swiper-slide {
+  position: relative;
+}
+.swiper-container .swiper-slide .swiper-slide-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: all 3s ease 0s;
+}
+
+/* モーダルCSS */
+.modalArea {
+  display: none;
+  position: fixed;
+  z-index: 10; /*サイトによってここの数値は調整 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modalBg {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30, 30, 30, 0.9);
+}
+
+.modalWrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 500px;
+  padding: 10px 30px;
+  background-color: #fff;
+}
+
+.closeModal {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+/* 以下ボタンスタイル */
+button {
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #282828;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+#openModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

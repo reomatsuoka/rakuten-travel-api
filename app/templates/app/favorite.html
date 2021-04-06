@@ -17,8 +17,7 @@
 					<a href="{% url 'removefavorite' hotel.hotelno %}">
                         <button class="inline-flex bg-blue-200 border border-black py-2 px-6 focus:outline-none hover:bg-blue-300 rounded text-lg">お気に入りから削除</button>
                     </a>
-                    <!-- URLの空白部分を削除して文字化けしない様にする -->
-					<a class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg" href="https://www.instagram.com/explore/tags/{{ hotel.hotelname }}" target="_blank">インスタへ</a>
+					<a class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg" href="https://www.instagram.com/explore/tags/{{ hotel.hotelname_replace }}" target="_blank">インスタへ</a>
 				</div>
 			</div>
 			<!-- <canvas class="col-md-3 mr-0" id="myRaderChart{{hotel.hotelno}}" height="300"></canvas> -->
