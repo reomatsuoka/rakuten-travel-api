@@ -131,8 +131,8 @@ class SearchView(View, LoginRequiredMixin):
         }
         result = get_api_data(params)
         # if 'hotels' not in result:
-        #     messages.info(request, '誠に申し訳ございませんが、\nこの検索条件に該当する空室が見つかりません。\n条件を変えて再検索してください。')
         #     return render(request, 'app/index.html')
+        #     messages.info(request, '誠に申し訳ございませんが、\nこの検索条件に該当する空室が見つかりません。\n条件を変えて再検索してください。')
 
         travel_data = []
         for i in result['hotels']:
