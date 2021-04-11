@@ -17,6 +17,7 @@ class SearchForm(forms.Form):
 
     checkin_date = forms.DateField(label='チェックイン日', required=True, widget=forms.DateInput(attrs={"type": "date"}),
         input_formats=['%Y-%m-%d'])
+    stay_days = forms.ChoiceField(label='宿泊日数', choices=[(x, x) for x in range(1, 10)])
     checkout_date = forms.DateField(label='チェックアウト日', required=True, widget=forms.DateInput(attrs={"type": "date"}),
         input_formats=['%Y-%m-%d'])
     middle_class_name = forms.ChoiceField(label='都道府県', widget=forms.Select, choices=list(prefecture_choice.items()))

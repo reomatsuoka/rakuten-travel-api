@@ -47,13 +47,14 @@ def paginate_queryset(request, queryset, count):
         page_obj = paginator.page(paginator.num_pages)
     return page_obj
 
-
-def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['middleClasses'] = json_obj.objects.all()
-        return context
 class IndexView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
+        error = self.kwargs.get('error')
+        if error:
+            modal = True
+        else:
+            modal = False
+
         form = SearchForm(request.POST or None)
 
         # JSONから下記を作れば完成
@@ -100,8 +101,18 @@ class IndexView(View, LoginRequiredMixin):
                 }
                 ranking_data.append(query)
 
+                # DetailAPIに情報がなければranking_dataから情報を削除する
+                # params2 = {
+                #     'hotelNo': hotelNo
+                # }
+                # result = get_api_detail_data(params2)
+                # if 'error' in result:
+                #     ranking_data.clear()
+
+
         return render(request, 'app/index.html', {
             'form': form,
+            'modal': modal,
             'category_data': json.dumps(category_data),
             'ranking_info': ranking_info,
             'ranking_data': ranking_data,
@@ -109,6 +120,7 @@ class IndexView(View, LoginRequiredMixin):
 
 class SearchView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
+        form = SearchForm(request.POST or None)
         checkin_date = request.GET['checkin_date']
         checkout_date = request.GET['checkout_date']
         middle_class_name = request.GET['middle_class_name']
@@ -130,10 +142,10 @@ class SearchView(View, LoginRequiredMixin):
             'maxCharge': max_charge,
         }
         result = get_api_data(params)
-        # if 'hotels' not in result:
-        #     return render(request, 'app/index.html')
-        #     messages.info(request, '誠に申し訳ございませんが、\nこの検索条件に該当する空室が見つかりません。\n条件を変えて再検索してください。')
+        if 'hotels' not in result:
+            return redirect('index', error='error')
 
+            
         travel_data = []
         for i in result['hotels']:
             hotel0 = i['hotel'][0]
@@ -201,6 +213,10 @@ class DetailView(View):
         }
 
         result = get_api_detail_data(params)
+        # if 'hotel' not in result:
+        #     return render(request, 'app/index.html')
+        #     messages.info(request, '誠に申し訳ございませんが、\nこの検索条件に該当する空室が見つかりません。\n条件を変えて再検索してください。')
+            
         hotel0 = result['hotels'][0]['hotel'][0]
         summary = hotel0['hotelBasicInfo']
         hotelname = summary['hotelName']
@@ -246,7 +262,6 @@ class DetailView(View):
             'rating_equipment': rating_equipment,
             'rating_meal': rating_meal,
             'rating_location': rating_location,
-            'average': float(review) * 20,
             'userReview': userReview,
             'dpPlanListUrl': dpPlanListUrl,
             'reviewUrl': reviewUrl,
