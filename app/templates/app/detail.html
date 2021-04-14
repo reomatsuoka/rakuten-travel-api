@@ -35,7 +35,15 @@
     <div class="flex flex-wrap justify-center items-center">
         <h1 class="text-4xl py-5 pl-3 flex justify-center">{{ travel_data.hotelname }}</h1>
         <a href="{% url 'addfavorite2' travel_data.hotelno %}">
-            <button class="flex bg-blue-200 border border-black ml-4 focus:outline-none hover:bg-blue-300 rounded text-lg">お気に入り</button>
+            <div class="ui right aligned vertical segment">
+                <div class="fav_button" style="cursor: pointer;">
+                    <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                        <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </a>
     </div>
     <hr>
@@ -74,6 +82,7 @@
 {% endblock %}
 {% block extrajs %}
 <script>
+    // 詳細画面（Swiper）
     const Myswiper = new Swiper('.swiper-container', {
         effect: 'coverflow',
         slidesPerView: 3,
@@ -90,7 +99,9 @@
             clickable: true,
         },
     });
+    // ここまで
 
+    // レーダーチャート
     const ctx = document.getElementById("myRaderChart");
     const myRadarChart = new Chart(ctx, {
         type: 'radar',
@@ -146,6 +157,45 @@
             },
         }
     });
+    // ここまで
+
+    // お気に入りボタン
+
+    function onClickVoteButton() {
+        $('.fav_button').on('click', function() {
+            const commentId = $(this).data('comment-id');
+            const currentCount = $(this).data('count');
+            const countViewer = $(this).find('.vote_counter');
+            if (votedList.indexOf(commentId) < 0) {
+                vote(commentId, currentCount, countViewer);
+            }
+        });
+    }
+
+    // ajax通信して投票結果を反映する
+    function vote(commentId, currentCount, countViewer) {
+        let url = '/favorite/';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                comment_id: commentId
+            }
+        }).then(
+            data => {
+                if (data.result) {
+                    countViewer.text(currentCount + 1);
+                    votedList.push(commentId);
+                }
+            },
+            error => {
+                if (error.responseJSON.message) {
+                    alert(error.responseJSON.message);
+                }
+            }
+        );
+    }
+// ここまで
 </script>
 {% endblock %}
 

@@ -143,7 +143,14 @@ class SearchView(View, LoginRequiredMixin):
         }
         result = get_api_data(params)
         if 'hotels' not in result:
-            return redirect('index', error='error')
+            error = self.kwargs.get('error')
+            if error:
+                modal = True
+            else:
+                modal = False
+            return redirect('index',{
+                'modal': modal,
+            })
 
             
         travel_data = []
@@ -339,7 +346,6 @@ class FavoriteView(View, LoginRequiredMixin):
                 'average': float(review) * 20,
             }
             hotel_data.append(query)
-        print(hotel_data)
 
         return render(request, 'app/favorite.html',{
             'hotel_data': hotel_data,

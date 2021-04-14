@@ -90,9 +90,9 @@
         <div id="modalBg" class="modalBg"></div>
         <div class="modalWrapper">
             <div class="modalContents">
-                <h1>Here are modal contents!</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et dolore magna aliqua. </p>
+                <h1>検索結果がありません。</h1>
+                <p>誠に申し訳ございませんが、この検索条件に該当する空室が見つかりません。
+                    条件を変えて再検索してください。 </p>
             </div>
             <div id="closeModal" class="closeModal">
                 ×
@@ -181,18 +181,36 @@
     
 
     checkin_date.setDate(checkin_date.getDate() - 3);
-    console.log(checkin_date.toLocaleString());
+    // console.log(checkin_date.toLocaleString());
 
 
 // モーダル機能
-    $(function () {
-        const modal = '{{ modal }}'
-        if (modal=='True'){
-            $('#modalArea').fadeIn();
-        }
-        $('#closeModal , #modalBg').click(function () {
-            $('#modalArea').fadeOut();
+    $("form").submit(function () {
+        $.ajax({
+            url: "{% url 'search' %}",
+            timeout: 10000,
+            dataType: "html",
+        })
+        .done(function () {
+                const modal = '{{ modal }}'
+                if (modal=='True'){
+                    $('#modalArea').fadeIn();
+                }
+                $('#closeModal , #modalBg').click(function () {
+                    $('#modalArea').fadeOut();
+                });
         });
-    });
+    })
+
+
+    // $(function () {
+    //     const modal = '{{ modal }}'
+    //     if (modal=='True'){
+    //         $('#modalArea').fadeIn();
+    //     }
+    //     $('#closeModal , #modalBg').click(function () {
+    //         $('#modalArea').fadeOut();
+    //     });
+    // });
 </script>
 {% endblock %}
