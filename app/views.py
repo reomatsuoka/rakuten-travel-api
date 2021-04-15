@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import JsonResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from .models import Hotel, Favorite, Area
@@ -204,7 +205,7 @@ class SearchView(View, LoginRequiredMixin):
 @login_required
 def addFavorite(request, id):
     favorite_data = Favorite.objects.get(user=request.user)
-    # 第2引数は使わないため　”_”を入れる。
+    # 第2引数は使わないため”_”を入れる。
     hotel_data, _ = Hotel.objects.get_or_create(number=id)
     if not hotel_data in favorite_data.hotelno.all():
         favorite_data.hotelno.add(hotel_data)
@@ -289,10 +290,58 @@ def addFavorite2(request, id):
     # 第2引数は使わないため　”_”を入れる。
     hotel_data, _ = Hotel.objects.get_or_create(number=id)
     if not hotel_data in favorite_data.hotelno.all():
+        favo = True
         favorite_data.hotelno.add(hotel_data)
         favorite_data.save()
+    
+    else:
+        favo = False
 
-    return redirect('favorite')
+    
+    context = {
+        'hotel_data': hotel_data,
+        'favorite_data': favorite_data,
+        'favo': favo,
+    }
+            
+    if request.is_ajax():
+        return JsonResponse(context)
+
+    # return redirect('favorite')
+
+# def FavoView(request):
+#     favo = Favorite.objects.all()
+#     liked_list = []
+#     for favorite in favo:
+#         liked = favorite.like_set.filter(user=request.user)
+#         if liked.exists():
+#             liked_list.append(favorite.id)
+
+#     context = {
+#         'favo': favo,
+#         'liked_list': liked_list,
+#     }
+
+#     return render(request, 'app/detail.html', context)
+
+def LikeView(request):
+    if request.method =="POST":
+        favorite = get_object_or_404(favorite, pk=request.POST.get('favorite_id'))
+        user = request.user
+        like = Favorite.objects.filter(favorite=favorite, user=user)
+        if like.exists():
+            like.delete()
+        else:
+            like.create(favorite=favorite, user=user)
+    
+        context={
+            'favorite_id': favorite.id,
+            'count': favorite.like_set.count(),
+        }
+
+    if request.is_ajax():
+        return JsonResponse(context)
+
 
 class FavoriteView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):

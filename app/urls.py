@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.IndexView.as_view(), name='index'),
     path('<str:error>', views.IndexView.as_view(), name='index'),
     path('search/', views.SearchView.as_view(), name='search'),
+    path('like/', views.LikeView, name='like'),
     path('detail/<str:hotelno>', views.DetailView.as_view(), name='detail'),
     path('favorite/', views.FavoriteView.as_view(), name='favorite'),
     path('addfavorite/<id>', views.addFavorite, name='addfavorite'),

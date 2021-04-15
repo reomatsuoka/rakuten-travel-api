@@ -34,7 +34,16 @@
     </div>
     <div class="flex flex-wrap justify-center items-center">
         <h1 class="text-4xl py-5 pl-3 flex justify-center">{{ travel_data.hotelname }}</h1>
-        <a href="{% url 'addfavorite2' travel_data.hotelno %}">
+        <form action="{% url 'favorite' %}" method="POST">
+            {% csrf_token %}
+            {% if hotel_data in travel_data %}
+                <button id="like" name="{{ hotel_data }}"><i class="fas fa-lg fa-heart"></i></button>
+            {% else %}
+                <button id="like" name="{{ hotel_data }}"><i class="far fa-lg fa-heart"></i></button>      
+            {% endif %}
+        </form>
+        <!-- <p name="{{favorite.id}}-count" class="count"> {{ favorite.like_set.count }} </p> -->
+        <!-- <a href="{% url 'addfavorite2' travel_data.hotelno %}">
             <div class="ui right aligned vertical segment">
                 <div class="fav_button" style="cursor: pointer;">
                     <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
@@ -44,7 +53,7 @@
                     </button>
                 </div>
             </div>
-        </a>
+        </a> -->
     </div>
     <hr>
     <div class="flex flex-col justify-center items-center sm:flex-row">
@@ -174,7 +183,7 @@
 
     // ajax通信して投票結果を反映する
     function vote(commentId, currentCount, countViewer) {
-        let url = '/favorite/';
+        let url = 'favorite';
         $.ajax({
             type: 'POST',
             url: url,
@@ -196,6 +205,33 @@
         );
     }
 // ここまで
+
+// お気に入りボタン
+$(document).ready(function(event){
+        $(document).on('click', '#like', function(event){
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'favorite' %}",
+                data: {
+                    'hotel_data': $(this).attr('name'),
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                dataType: 'json',
+                success: function(response){
+                    selector = document.getElementsByName(response.hotel_data);
+                    if(response.favo){
+                        $(selector).html("<i class='fas fa-lg fa-heart'></i>");
+                    }
+                    else {
+                        $(selector).html("<i class='far fa-lg fa-heart'></i>");
+                    }
+                    selector2 = document.getElementsByName
+                }
+            });
+        });
+    });
+//ここまで 
 </script>
 {% endblock %}
 
