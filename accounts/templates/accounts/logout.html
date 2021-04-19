@@ -2,6 +2,21 @@
 
 {% block content %}
 
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto flex flex-wrap items-center justify-center">
+        <div class="bg-gray-300 rounded-3xl py-12 px-16">
+            <h2 class="text-gray-900 text-lg font-medium title-font mb-5 text-center">ログアウトしますか？</h2>
+            <form method="post" class="text-center">
+                {% csrf_token %}
+                    <button
+                        class="text-white bg-yellow-500 border-0  py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg "type="submit">ログアウト
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- 
 <div class="card card-auth my-5 mx-auto">
     <div class="card-body">
         <p class="card-title text-center">ログアウトしますか？</p>
@@ -12,6 +27,6 @@
             </div>
         </form>
     </div>
-</div>
+</div> -->
 
 {% endblock %}

@@ -32,13 +32,13 @@ main {
   font-weight: bold;
 }
 
-.profile_table {
+/* .profile_table {
   width: 100%;
   border: 1px solid #d1dbeb;
   border-radius: 8px;
   border-collapse: separate;
   overflow: hidden;
-}
+} */
 
 .profile_table .header {
   width: 200px;
@@ -48,7 +48,7 @@ main {
 }
 
 .profile_table .data {
-  padding: 16px 24px;
+  padding: 16px 60px;
 }
 
 .form_wrap {
@@ -64,7 +64,7 @@ main {
   box-shadow: none;
 }
 
-.card-auth {
+/* .card-auth {
   width: 400px;
   border: 0;
   border-radius: 1rem;
@@ -78,7 +78,7 @@ main {
 
 .card-body {
   padding: 2rem;
-}
+} */
 
 .form-auth {
   width: 100%;

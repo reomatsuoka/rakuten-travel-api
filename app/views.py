@@ -83,7 +83,6 @@ class IndexView(View, LoginRequiredMixin):
             title = ranking['title']
             hotels = ranking['hotels']
             ranking_info = title
-        
 
             for j in hotels:
                 hotel = j['hotel']
@@ -100,7 +99,10 @@ class IndexView(View, LoginRequiredMixin):
                     'hotelImageUrl': hotelImageUrl,
                     'hotelNo': hotelNo,
                 }
-                ranking_data.append(query)
+                for a in range(2,7):
+                    if rank == a:
+                        ranking_data.append(query)
+                        break
 
                 # DetailAPIに情報がなければranking_dataから情報を削除する
                 # params2 = {
@@ -284,59 +286,28 @@ class DetailView(View):
             'travel_data': travel_data,
         })
 
-@login_required
-def addFavorite2(request, id):
-    favorite_data = Favorite.objects.get(user=request.user)
-    # 第2引数は使わないため　”_”を入れる。
-    hotel_data, _ = Hotel.objects.get_or_create(number=id)
-    if not hotel_data in favorite_data.hotelno.all():
-        favo = True
-        favorite_data.hotelno.add(hotel_data)
-        favorite_data.save()
-    
-    else:
-        favo = False
-
-    
-    context = {
-        'hotel_data': hotel_data,
-        'favorite_data': favorite_data,
-        'favo': favo,
-    }
-            
-    if request.is_ajax():
-        return JsonResponse(context)
-
-    # return redirect('favorite')
-
-# def FavoView(request):
-#     favo = Favorite.objects.all()
-#     liked_list = []
-#     for favorite in favo:
-#         liked = favorite.like_set.filter(user=request.user)
-#         if liked.exists():
-#             liked_list.append(favorite.id)
-
-#     context = {
-#         'favo': favo,
-#         'liked_list': liked_list,
-#     }
-
-#     return render(request, 'app/detail.html', context)
-
 def LikeView(request):
     if request.method =="POST":
-        favorite = get_object_or_404(favorite, pk=request.POST.get('favorite_id'))
-        user = request.user
-        like = Favorite.objects.filter(favorite=favorite, user=user)
-        if like.exists():
-            like.delete()
+        hotel_data, _ = Hotel.objects.get_or_create(number=request.POST.get('hotelno'))
+        favorite_data = Favorite.objects.get(user=request.user)
+        if not hotel_data in favorite_data.hotelno.all():
+            favorite_data.hotelno.add(hotel_data)
+            favorite_data.save()
+            favo = True
         else:
-            like.create(favorite=favorite, user=user)
-    
+            favorite_data.hotelno.remove(hotel_data)
+            favorite_data.save()
+            favo = False
+
+        hotel_list = []
+        for i in favorite_data.hotelno.all():
+            hotel_list.append(i.number)
+        print(hotel_list)
+
         context={
-            'favorite_id': favorite.id,
-            'count': favorite.like_set.count(),
+            'hotel_list': hotel_list,
+            'hotelno': request.POST.get('hotelno'),
+            'favo': favo,
         }
 
     if request.is_ajax():

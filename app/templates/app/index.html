@@ -36,10 +36,10 @@
                             <p class="mr-2">Check Out :</p>
                             <p class="border rounded">{{ form.checkout_date }}</p>
                         </div>
-                        <div class="flex self-center justify-start">
+                        <!-- <div class="flex self-center justify-start">
                             <p class="mx-2">日数 :</p>
                             <p class="border rounded">{{ form.stay_days }}</p>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="flex self-center justify-start mr-4 mb-4">
                         <p class="mr-2">都道府県 :</p>
@@ -176,11 +176,10 @@
 // ここまで(カテゴリーを絞る)
 // ここから(カレンダーの自動入力)
 
-    const checkin_date = new Date('#id_checkin_date');
-    const stay_days = $('#id_stay_days');
-    
-
-    checkin_date.setDate(checkin_date.getDate() - 3);
+    // const checkin_date = new Date('form.checkin_date');
+    // const stay_days = $('form.stay_days');
+    // const checkout_date = $('form.checkout_date')
+    // checkout_date.setDate(checkin_date.getDate() - stay_days);
     // console.log(checkin_date.toLocaleString());
 
 

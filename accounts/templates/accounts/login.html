@@ -3,22 +3,28 @@
 
 {% block content %}
 
-<div class="card card-auth my-5 mx-auto">
-    <div class="card-body">
-        <h5 class="card-title text-center">ログイン</h5>
-        <form method="post" class="form-auth">
-            {% csrf_token %}
-            <div class="form-label-group">
-                {% render_field form.login class="form-control" placeholder="メールアドレス" %}
-            </div>
-            <div class="form-label-group">
-                {% render_field form.password class="form-control" placeholder="パスワード" %}
-            </div>
-            <div class="button mx-auto">
-                <button class="btn btn-lg btn-primary btn-block mx-auto" type="submit">ログイン</button>
-            </div>
-        </form>
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto flex flex-wrap items-center justify-center">
+        <div class="bg-gray-300 rounded-3xl py-12 px-16">
+            <h2 class="text-gray-900 text-lg font-medium title-font mb-5 text-center">ログイン</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="relative mb-4">
+                    <label for="full-name" class="leading-7 text-sm text-gray-600">Email</label>
+                    {% render_field form.login class="form-control w-full bg-white rounded border rounded-full border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="メールアドレス" %}
+                </div>
+                <div class="relative mb-12">
+                    <label for="email" class="leading-7 text-sm text-gray-600">Password</label>
+                    {% render_field form.password class="form-control w-full bg-white rounded border rounded-full border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="パスワード" %}
+                </div>
+                <div class="relative text-center">
+                    <button
+                        class="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg justify-center"type="submit">ログイン
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+</section>
 
 {% endblock %}

@@ -1,6 +1,7 @@
 from django import forms
 from .models import Area
 import json
+import datetime
 
 json_file = open('app/areacode.json', 'r')
 # JSONとして読み込む
@@ -15,11 +16,14 @@ class SearchForm(forms.Form):
         for j in small_classes:
             city_choice[j['smallClass'][0]['smallClassCode']] = j['smallClass'][0]['smallClassName']
 
+    today = datetime.date.today()
+    plus_date = datetime.timedelta(days=1)
+    tomorrow = today + plus_date
     checkin_date = forms.DateField(label='チェックイン日', required=True, widget=forms.DateInput(attrs={"type": "date"}),
-        input_formats=['%Y-%m-%d'])
+        input_formats=['%Y-%m-%d'], initial=today)
     stay_days = forms.ChoiceField(label='宿泊日数', choices=[(x, x) for x in range(1, 10)])
     checkout_date = forms.DateField(label='チェックアウト日', required=True, widget=forms.DateInput(attrs={"type": "date"}),
-        input_formats=['%Y-%m-%d'])
+        input_formats=['%Y-%m-%d'], initial=tomorrow)
     middle_class_name = forms.ChoiceField(label='都道府県', widget=forms.Select, choices=list(prefecture_choice.items()))
     small_class_name = forms.ChoiceField(label='市区郡名', widget=forms.Select, choices=list(city_choice.items()))
     adult_num = forms.ChoiceField(label='大人の人数', choices=[(x, x) for x in range(1, 10)])
