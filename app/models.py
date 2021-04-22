@@ -26,4 +26,4 @@ class Favorite(models.Model):
     hotelno = models.ManyToManyField(Hotel, blank=True)
 
     def __str__(self):
-        return str(self.hotelno)
+        return str(self.user)

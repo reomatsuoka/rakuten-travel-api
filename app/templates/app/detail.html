@@ -34,21 +34,21 @@
     </div>
     <div class="flex flex-wrap justify-center items-center">
         <h1 class="text-4xl py-5 pl-3 flex justify-center">{{ travel_data.hotelname }}</h1>
-
-        {% if not travel_data.hotelno in hotel_list %}
-            <button id="like" name="{{ travel_data.hotelno }}"><i class="fas fa-lg fa-heart"></i></button>
+        {% if travel_data.hotelno in hotel_list %}
+            <button id="like" name="{{ travel_data.hotelno }}" class="rounded-full w-10 h-10 bg-gray-300 p-0 border-0 inline-flex items-center justify-center text-red-500 ml-4">
+                <i class='fas fa-lg fa-heart text-red-500'></i>
+            </button>
         {% else %}
-            <button id="like" name="{{ travel_data.hotelno }}"><i class="far fa-lg fa-heart"></i></button>      
+            <button id="like" name="{{ travel_data.hotelno }}" class="rounded-full w-10 h-10 bg-gray-300 p-0 border-0 inline-flex items-center justify-center text-white ml-4">
+                <i class='fas fa-lg fa-heart'></i>
+            </button>      
         {% endif %}
     </div>
     <hr>
     <div class="flex flex-col justify-center items-center sm:flex-row">
         <div class="sm:w-1/2 text-center sm:pr-8 sm:py-8">
-            {% if travel_data.rating_service == 0 or travel_data.rating_room == 0 or travel_data.rating_equipment == 0 or travel_data.rating_meal == 0 or travel_data.rating_location == 0 %}
-                <p class="mt-5">まだレビュー詳細はありません。</p>
-            {% else %}
-                <canvas class="mb-5" id="myRaderChart" height="200"></canvas>
-            {% endif %}
+            <canvas class="mb-5" id="myRaderChart" height="180"></canvas>
+            <p>※レビューがない場合、表記されないことがあります。</p>
         </div>
         {% if not travel_data.reviewCount == 0 %}
             <div class="sm:w-1/2 sm:pl-8 sm:py-8 sm:border-l border-gray-200 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
@@ -154,44 +154,6 @@
     });
     // ここまで
 
-    // お気に入りボタン
-
-    function onClickVoteButton() {
-        $('.fav_button').on('click', function() {
-            const commentId = $(this).data('comment-id');
-            const currentCount = $(this).data('count');
-            const countViewer = $(this).find('.vote_counter');
-            if (votedList.indexOf(commentId) < 0) {
-                vote(commentId, currentCount, countViewer);
-            }
-        });
-    }
-
-    // ajax通信して投票結果を反映する
-    function vote(commentId, currentCount, countViewer) {
-        let url = 'favorite';
-        $.ajax({
-            type: 'POST',
-            url: url,
-            data: {
-                comment_id: commentId
-            }
-        }).then(
-            data => {
-                if (data.result) {
-                    countViewer.text(currentCount + 1);
-                    votedList.push(commentId);
-                }
-            },
-            error => {
-                if (error.responseJSON.message) {
-                    alert(error.responseJSON.message);
-                }
-            }
-        );
-    }
-// ここまで
-
 // お気に入りボタン
     $(document).on('click', '#like', function(event){
         event.preventDefault();
@@ -207,10 +169,10 @@
             success: function(response){
                 selector = document.getElementsByName(response.hotelno);
                 if(response.favo){
-                    $(selector).html("<i class='fas fa-lg fa-heart'></i>");
+                    $(selector).html("<i class='fas fa-lg fa-heart text-red-500'></i>");
                 }
                 else {
-                    $(selector).html("<i class='far fa-lg fa-heart'></i>");
+                    $(selector).html("<i class='fas fa-lg fa-heart'></i>");
                 }
             }
         });

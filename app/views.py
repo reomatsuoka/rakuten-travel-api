@@ -50,11 +50,18 @@ def paginate_queryset(request, queryset, count):
 
 class IndexView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
-        error = self.kwargs.get('error')
-        if error:
-            modal = True
-        else:
-            modal = False
+        # error = self.kwargs.get('error')
+        # if error:
+        #     modal = True
+        # else:
+        #     modal = False
+        
+        # context={
+        #     'modal': modal,
+        #     'error': error,
+        # }
+        # if request.is_ajax():
+        #     return JsonResponse(context)
 
         form = SearchForm(request.POST or None)
 
@@ -115,7 +122,7 @@ class IndexView(View, LoginRequiredMixin):
 
         return render(request, 'app/index.html', {
             'form': form,
-            'modal': modal,
+            # 'modal': modal,
             'category_data': json.dumps(category_data),
             'ranking_info': ranking_info,
             'ranking_data': ranking_data,
@@ -145,16 +152,23 @@ class SearchView(View, LoginRequiredMixin):
             'maxCharge': max_charge,
         }
         result = get_api_data(params)
-        if 'hotels' not in result:
-            error = self.kwargs.get('error')
-            if error:
-                modal = True
-            else:
-                modal = False
-            return redirect('index',{
-                'modal': modal,
-            })
 
+        if 'hotels' not in result:
+            return render(request, 'app/error.html')
+            # error = self.kwargs.get('error')
+            # if error:
+            #     modal = True
+            # else:
+            #     modal = False
+            
+            # context={
+            #     'modal': modal,
+            #     'error': error,
+            #     'form': form,
+            # }
+
+        if request.is_ajax():
+            return JsonResponse(context)
             
         travel_data = []
         for i in result['hotels']:
@@ -223,9 +237,6 @@ class DetailView(View):
         }
 
         result = get_api_detail_data(params)
-        # if 'hotel' not in result:
-        #     return render(request, 'app/index.html')
-        #     messages.info(request, '誠に申し訳ございませんが、\nこの検索条件に該当する空室が見つかりません。\n条件を変えて再検索してください。')
             
         hotel0 = result['hotels'][0]['hotel'][0]
         summary = hotel0['hotelBasicInfo']
@@ -302,7 +313,6 @@ def LikeView(request):
         hotel_list = []
         for i in favorite_data.hotelno.all():
             hotel_list.append(i.number)
-        print(hotel_list)
 
         context={
             'hotel_list': hotel_list,
@@ -363,9 +373,9 @@ class FavoriteView(View, LoginRequiredMixin):
                 'rating_equipment': rating_equipment,
                 'rating_meal': rating_meal,
                 'rating_location': rating_location,
-                'average': float(review) * 20,
             }
             hotel_data.append(query)
+
 
         return render(request, 'app/favorite.html',{
             'hotel_data': hotel_data,

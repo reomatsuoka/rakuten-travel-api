@@ -5,10 +5,14 @@
 }
 
 body {
-  background: #f1f1f1;
   display: flex;
   flex-flow: column;
   min-height: 100vh;
+}
+
+/* 検索画面 */
+.catch_copy{
+  transform: rotate(-10deg);
 }
 
 main {
@@ -64,22 +68,6 @@ main {
   box-shadow: none;
 }
 
-/* .card-auth {
-  width: 400px;
-  border: 0;
-  border-radius: 1rem;
-  box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  margin-bottom: 2rem;
-  font-size: 1.5rem;
-}
-
-.card-body {
-  padding: 2rem;
-} */
-
 .form-auth {
   width: 100%;
 }
@@ -100,6 +88,10 @@ main {
   display: block;
   max-width: 100%;
   max-height: 300px;
+}
+/* 検索後の画面 */
+container{
+  background-color: #f3e4d3;
 }
 
 /* detail */
@@ -237,4 +229,34 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+/* インスタグラム遷移ボタン */
+.insta_btn .insta{/*アイコンの背景*/
+  position: relative;/*相対配置*/
+  display: inline-block;
+  width: 50px;/*幅*/
+  height: 50px;/*高さ*/
+  background: -webkit-linear-gradient(160deg, #427eff 0%, #f13f79 50%) no-repeat;
+  background: linear-gradient(155deg, #427eff 0%, #f13f79 30%) no-repeat;/*グラデーション①*/
+  overflow: hidden;/*はみ出た部分を隠す*/
+  border-radius: 13px;/*角丸に*/
+}
+.insta_btn .insta:before{/*グラデーションを重ねるため*/
+  content: '';
+  position: absolute;/*絶対配置*/
+  top: 32px;/*ずらす*/
+  left: -15px;/*ずらす*/
+  width: 70px;/*グラデーションカバーの幅*/
+  height: 60px;/*グラデーションカバーの高さ*/
+  background: -webkit-radial-gradient(#ffdb2c 10%, rgba(255, 105, 34, 0.65) 55%, rgba(255, 88, 96, 0) 70%);
+  background: radial-gradient(#ffdb2c 10%, rgba(255, 105, 34, 0.65) 55%, rgba(255, 88, 96, 0) 70%);/*グラデーション②*/
+}
+.insta_btn .fa-instagram {/*アイコン*/
+  color: #FFF;/*白に*/
+  position: relative;/*z-indexを使うため*/
+  z-index: 2;/*グラデーションより前に*/
+  font-size: 40px;/*アイコンサイズ*/
+  line-height: 50px;/*高さと合わせる*/
+  left: 7px;
 }
