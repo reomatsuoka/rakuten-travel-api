@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="w-full mx-auto text-center">
+            <p class="leading-relaxed text-2xl">お気に入りがありません。<br>検索してあなただけのお気に入りリストを作りましょう！</p>
+                <a href="{% url 'index' %}">
+                    <button class="self-center text-white bg-green-500 border-0 mt-3 py-2 px-6 ml-2 focus:outline-none hover:bg-green-600 rounded text-lg"
+                    type="submit">検索 →</button>
+                </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

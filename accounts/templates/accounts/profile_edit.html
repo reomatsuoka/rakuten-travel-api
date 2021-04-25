@@ -7,14 +7,20 @@
     <div class="container px-5 py-24 mx-auto flex flex-wrap items-center justify-center">
         <div class="bg-gray-300 rounded-lg p-12 border rounded-3xl">
             <h2 class="text-gray-900 text-lg font-medium title-font mb-5 text-center">プロフィール</h2>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="relative">
+                <div class="relative mb-4">
                     <label for="full-name" class="leading-7 text-sm text-gray-600">名前</label>
                     <div class="flex w-full sm:flex-row flex-col">
                         {% render_field form.first_name class="form-control w-full bg-white rounded border rounded-full border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 mr-4 leading-8 transition-colors duration-200 ease-in-out" placeholder="姓" %}
 
                         {% render_field form.last_name class="form-control w-full bg-white rounded border rounded-full border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out" placeholder="名" %}
+                    </div>
+                </div>
+                <div class="relative mb-4">
+                    <label for="full-name" class="leading-7 text-sm text-gray-600 mb-2">プロフィール画像</label>
+                    <div class="w-full">
+                        {{ form.image }}
                     </div>
                 </div>
                 <div class="relative mb-12">
@@ -30,34 +36,5 @@
         </div>
     </div>
 </section>
-
-<!-- <div class="card card-profile my-5 mx-auto">
-    <div class="card-body">
-        <h5 class="card-title text-center">プロフィール</h5>
-        <form method="post">
-            {% csrf_token %}
-            <table class="profile_table mb-4">
-                <tbody>
-                    <tr>
-                        <th class="header">名前</th>
-                        <td class="data form_wrap form_wrap-2">
-                            {% render_field form.first_name class="form-control" placeholder="姓" %}
-                            {% render_field form.last_name class="form-control" placeholder="名" %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="header">所属</th>
-                        <td class="data">
-                            {% render_field form.department class="form-control" placeholder="所属" %}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="button mx-auto">
-                <button class="btn btn-lg btn-warning btn-block" type="submit">登録する</button>
-            </div>
-        </form>
-    </div>
-</div> -->
 
 {% endblock %}

@@ -167,8 +167,8 @@ class SearchView(View, LoginRequiredMixin):
             #     'form': form,
             # }
 
-        if request.is_ajax():
-            return JsonResponse(context)
+        # if request.is_ajax():
+        #     return JsonResponse(context)
             
         travel_data = []
         for i in result['hotels']:
@@ -326,60 +326,66 @@ def LikeView(request):
 
 class FavoriteView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
-        # hotelnoの情報を引き出す。
-        favorite_data = Favorite.objects.get(user=request.user)
-        hotelno = favorite_data.hotelno
-        hotel_data = []
-        for hotelno_data in favorite_data.hotelno.all():
-            params = {
-                'hotelNo': hotelno_data.number,
-            }
-            result = get_api_detail_data(params)
-            hotel0 = result['hotels'][0]['hotel'][0]
-            summary = hotel0['hotelBasicInfo']
-            hotelname = summary['hotelName']
-            hotelname_replace = hotelname.replace('　', '')
-            hotelno = summary['hotelNo']
-            image = summary['hotelImageUrl']
-            review = summary['reviewAverage']
-            reviewCount = summary['reviewCount']
-            plan = summary['planListUrl']
-            minprice = summary['hotelMinCharge']
-            hotel_detail = summary['hotelSpecial']
-            address = summary['address1']
-            address2 = summary['address2']
+        #userを取得or作成する。
+        favorite_data, _ = Favorite.objects.get_or_create(user=request.user)
+        # userに結びつくhotelnoを取得する
+        hotelno = favorite_data.hotelno.all()
+        # hotelnoが存在すればお気に入りにデータを出力。
+        if hotelno.exists():
+            hotel_data = []
+            for hotelno_data in favorite_data.hotelno.all():
+                params = {
+                    'hotelNo': hotelno_data.number,
+                }
+                result = get_api_detail_data(params)
+                hotel0 = result['hotels'][0]['hotel'][0]
+                summary = hotel0['hotelBasicInfo']
+                hotelname = summary['hotelName']
+                hotelname_replace = hotelname.replace('　', '')
+                hotelno = summary['hotelNo']
+                image = summary['hotelImageUrl']
+                review = summary['reviewAverage']
+                reviewCount = summary['reviewCount']
+                plan = summary['planListUrl']
+                minprice = summary['hotelMinCharge']
+                hotel_detail = summary['hotelSpecial']
+                address = summary['address1']
+                address2 = summary['address2']
 
-            hotel1 = result['hotels'][0]['hotel'][1]
-            rating_info = hotel1['hotelRatingInfo']
-            rating_service = rating_info['serviceAverage']
-            rating_room = rating_info['roomAverage']
-            rating_equipment = rating_info['equipmentAverage']
-            rating_meal = rating_info['mealAverage']
-            rating_location = rating_info['locationAverage']
-            query = {
-                'hotelname': hotelname,
-                'hotelname_replace': hotelname_replace,
-                'hotelno': hotelno,
-                'image': image,
-                'review': review,
-                'reviewCount': reviewCount,
-                'plan': plan,
-                'minprice': minprice,
-                'hotel_detail': hotel_detail,
-                'address':address,
-                'address2': address2,
-                'rating_service': rating_service,
-                'rating_room': rating_room,
-                'rating_equipment': rating_equipment,
-                'rating_meal': rating_meal,
-                'rating_location': rating_location,
-            }
-            hotel_data.append(query)
+                hotel1 = result['hotels'][0]['hotel'][1]
+                rating_info = hotel1['hotelRatingInfo']
+                rating_service = rating_info['serviceAverage']
+                rating_room = rating_info['roomAverage']
+                rating_equipment = rating_info['equipmentAverage']
+                rating_meal = rating_info['mealAverage']
+                rating_location = rating_info['locationAverage']
+                query = {
+                    'hotelname': hotelname,
+                    'hotelname_replace': hotelname_replace,
+                    'hotelno': hotelno,
+                    'image': image,
+                    'review': review,
+                    'reviewCount': reviewCount,
+                    'plan': plan,
+                    'minprice': minprice,
+                    'hotel_detail': hotel_detail,
+                    'address':address,
+                    'address2': address2,
+                    'rating_service': rating_service,
+                    'rating_room': rating_room,
+                    'rating_equipment': rating_equipment,
+                    'rating_meal': rating_meal,
+                    'rating_location': rating_location,
+                }
+                hotel_data.append(query)
 
-
-        return render(request, 'app/favorite.html',{
-            'hotel_data': hotel_data,
-        })
+            return render(request, 'app/favorite.html',{
+                'hotel_data': hotel_data,
+            })
+        # hotelnoがなければ”該当なし”と出力する。
+        else:
+            return render(request, 'app/notexists.html')
+        # hotelno = favorite_data.hotelno
 
 @login_required
 def removeFavorite(request, id):

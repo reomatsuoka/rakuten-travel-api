@@ -3,38 +3,39 @@
 {% block content %}
 <section class="text-gray-600 body-font">
     <div class="container px-5 py-24 mx-auto flex flex-wrap items-center justify-center">
-        <div class="bg-white rounded-3xl py-12 px-16">
+        <div class="bg-white rounded-3xl py-12 px-24">
             <h2 class="text-gray-900 text-lg font-medium title-font mb-5 text-center">プロフィール</h2>
-            <table class="profile_table my-12 rounded-md">
-                <tbody>
-                    <tr>
-                        <th class="text-left bg-yellow-400 px-6 w-52 border-2 border-solid rounded-md border-black">名前</th>
-                        <td class="data">{{ user_data.first_name }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-left bg-yellow-400 px-6 w-52 border-2 border-solid rounded-md border-black">メールアドレス</th>
-                        <td class="data">{{ user_data.email }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-left bg-yellow-400 px-6 w-52 border-2 border-solid rounded-md border-black">所属</th>
-                        <td class="data">{{ user_data.department }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-left bg-yellow-400 px-6 w-52 border-2 border-solid rounded-md border-black">入会日</th>
-                        <td class="data">{{ user_data.created }}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="flex justify-center">
+            {% if user_data.image %}
+                <div class="flex items-center justify-center">
+                    <img src="{{ user_data.image.url }}" alt="プロフィール画像" class="h-28 w-28 border rounded-full object-cover">
+                </div>
+            {% endif %}
+            <div class="flex h-12 items-center text-lg">
+                <div class="text-left px-6 border-0">名前　：</div>
+                <div class="font-bold">{{ user_data.first_name }}　{{ user_data.last_name }}</div>
+            </div>
+            <hr>
+            <div class="flex h-12 items-center text-lg">
+                <div class="text-left px-6 border-0">メール：</div>
+                <div class="font-bold">{{ user_data.email }}</div>
+            </div>
+            <hr>
+            <div class="flex h-12 items-center text-lg">
+                <div class="text-left px-6 border-0">所属　：</div>
+                <div class="font-bold">{{ user_data.department }}</div>
+            </div>
+            <hr>
+            <div class="flex h-12 items-center text-lg">
+                <div class="text-left px-6 border-0">入会日：</div>
+                <div class="font-bold">{{ user_data.created }}</div>
+            </div>
+            <div class="flex justify-center mt-5">
                 <a href="{% url 'profile_edit' %}">
-                    <button class="flex justify-center bg-yellow-500 border-0  py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg "type="submit">
+                    <button class="flex justify-center bg-yellow-400 border-0  py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg text-black"type="submit">
                         編集する
                     </button>
                 </a>
             </div>
-            <!-- <div class="button mx-auto">
-                <a class="btn btn-lg btn-warning btn-block" href="{% url 'profile_edit' %}">編集する</a>
-            </div> -->
         </div>
     </div>
 </section>
