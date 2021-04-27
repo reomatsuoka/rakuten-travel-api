@@ -115,6 +115,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+# 画像アップロードするURLを指定する。
+MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -131,9 +133,6 @@ MESSAGE_TAGS = {
 }
 MESSAGE_LEVEL = message_constants.DEBUG
 
-# 画像アップロードするURLを指定する。
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # デプロイ設定
 DEBUG = False
@@ -150,6 +149,7 @@ if DEBUG:
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 if not DEBUG:
+    DEBUG = True
     import environ
     env = environ.Env()
     env.read_env(os.path.join(BASE_DIR,'.env'))
