@@ -50,19 +50,6 @@ def paginate_queryset(request, queryset, count):
 
 class IndexView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
-        # error = self.kwargs.get('error')
-        # if error:
-        #     modal = True
-        # else:
-        #     modal = False
-        
-        # context={
-        #     'modal': modal,
-        #     'error': error,
-        # }
-        # if request.is_ajax():
-        #     return JsonResponse(context)
-
         form = SearchForm(request.POST or None)
 
         # JSONから下記を作れば完成
@@ -111,18 +98,8 @@ class IndexView(View, LoginRequiredMixin):
                         ranking_data.append(query)
                         break
 
-                # DetailAPIに情報がなければranking_dataから情報を削除する
-                # params2 = {
-                #     'hotelNo': hotelNo
-                # }
-                # result = get_api_detail_data(params2)
-                # if 'error' in result:
-                #     ranking_data.clear()
-
-
         return render(request, 'app/index.html', {
             'form': form,
-            # 'modal': modal,
             'category_data': json.dumps(category_data),
             'ranking_info': ranking_info,
             'ranking_data': ranking_data,
@@ -155,21 +132,7 @@ class SearchView(View, LoginRequiredMixin):
 
         if 'hotels' not in result:
             return render(request, 'app/error.html')
-            # error = self.kwargs.get('error')
-            # if error:
-            #     modal = True
-            # else:
-            #     modal = False
-            
-            # context={
-            #     'modal': modal,
-            #     'error': error,
-            #     'form': form,
-            # }
 
-        # if request.is_ajax():
-        #     return JsonResponse(context)
-            
         travel_data = []
         for i in result['hotels']:
             hotel0 = i['hotel'][0]
@@ -385,7 +348,6 @@ class FavoriteView(View, LoginRequiredMixin):
         # hotelnoがなければ”該当なし”と出力する。
         else:
             return render(request, 'app/notexists.html')
-        # hotelno = favorite_data.hotelno
 
 @login_required
 def removeFavorite(request, id):

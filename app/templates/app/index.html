@@ -3,22 +3,6 @@
 
 {% block content %}
 <section class="text-gray-600 body-font relative bg-green-50">
-    <!-- {% if messages %}
-    <div class="container relative flex justify-center items-center">
-        <div
-            class="notification is-info bg-white rounded-lg flex flex-col justify-center items-center w-2/5 h-40 mt-10">
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %} alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                {{message}}
-            </div>
-            {% endfor %}
-            {% endif %}
-            <a class="text-blue-500 mt-3" href="/">戻る→</a>
-        </div>
-    </div>
-    {% endif %} -->
     <div class="container px-2 pt-12 pb-0 mx-auto flex flex-wrap">
         <div class="catch_copy w-5/12 text-4xl text-center self-center">
             <h1 class="font-serif">次はどこへ行こうか</h1>
@@ -81,7 +65,6 @@
                         <button
                         class="flex center text-white bg-green-500 border-0 py-2 px-6 ml-2 focus:outline-none hover:bg-green-600 rounded text-lg"
                             type="submit">Button</button>
-                            <!-- <button id="openModal" class="bg-white">Open modal</button> -->
                     </div>
                 </form>
             </div>
@@ -179,43 +162,5 @@
         changeCategory();
     });
 // ここまで(カテゴリーを絞る)
-// ここから(カレンダーの自動入力)
-
-    // const checkin_date = new Date('form.checkin_date');
-    // const stay_days = $('form.stay_days');
-    // const checkout_date = $('form.checkout_date')
-    // checkout_date.setDate(checkin_date.getDate() - stay_days);
-    // console.log(checkin_date.toLocaleString());
-
-// モーダル機能
-    // $("form").submit(function () {
-    //     $.ajax({
-    //         type:'GET',
-    //         url: "{% url 'error' %}",
-    //         dataType: 'json',
-    //         success: function () {
-    //             const modal = '{{ modal }}'
-    //             console.log('{{ modal }}')
-    //             if (modal=='True'){
-    //                 $('#modalArea').fadeIn();
-    //             }
-    //             $('#closeModal , #modalBg').click(function () {
-    //                 $('#modalArea').fadeOut();
-    //             });
-    //         }
-    //     });
-    // })
-
-
-    // $(function () {
-    //     const modal = '{{ modal }}'
-    //     console.log(modal)
-    //     if (modal=='True'){
-    //         $('#modalArea').fadeIn();
-    //     }
-    //     $('#closeModal , #modalBg').click(function () {
-    //         $('#modalArea').fadeOut();
-    //     });
-    // });
 </script>
 {% endblock %}
