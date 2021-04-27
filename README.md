@@ -13,5 +13,9 @@
 * "gunicorn --bind 127.0.0.1:8000 mysite.wsgi:application &"
 * 上記文 "&"をつけることでバックグラウンドで走る。
 
-
-
+エラーが出た場合、DEBUG = Trueにして原因を追求する。
+## 〜permissionエラーの場合〜
+* "/usr/share/nginx/html/media"を変えたい場合、
+* 1つ前 "cd /usr/share/nginx/html/"に移動して
+* "sudo chmod -R 777 media" でmedia のアクセス権限を全ユーザーに持たせる。
+* "ll" で確認。光っていたらok
